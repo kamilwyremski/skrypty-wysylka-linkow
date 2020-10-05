@@ -1,0 +1,11 @@
+{
+	"background_color": "#ffffff",
+	"theme_color": "#333333",
+	"name": "Skrypty stron www",
+	"short_name": "Skrypty stron www",
+	"display": "minimal-ui",
+	"start_url": "/",
+	"icons": [
+	
+	]
+}
