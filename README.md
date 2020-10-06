@@ -1,7 +1,7 @@
 # Skrypty stron www
 Aplikacja do wysyłki linków do pobrania skryptów
 
-## Running the project
+## Uruchomienie projektu
 
 ```bash
 cd my-app
@@ -9,8 +9,10 @@ npm install # or yarn
 npm run dev
 ```
 
-Open up [localhost:3000](http://localhost:3000) and start clicking around.
+Zmień nazwę pliku .env - sample na .env i uzupełnij prawidłowy adres url do API
 
-## Production mode and deployment
+## Tryb produkcji
 
+```bash
 npm run export
+```
