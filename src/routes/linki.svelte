@@ -287,7 +287,7 @@
 					</div>
 					<div class="form-group">
 						<label for="content">Treść <span class="text-danger">*</span></label>
-						<textarea class="form-control" name="content" style="min-height:150px" required bind:value="{SendMailLinkContent}"></textarea>
+						<textarea class="form-control" name="content" style="min-height:200px" required bind:value="{SendMailLinkContent}"></textarea>
 					</div>
 				</ModalBody>
 				<ModalFooter>
