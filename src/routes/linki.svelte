@@ -1,10 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import {
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader
+    Modal, ModalBody, ModalFooter, ModalHeader,
+		Toast, ToastBody, ToastHeader
   } from 'sveltestrap';
 	import { authToken } from "../stores";
 	import Loader from "../components/Loader.svelte";
@@ -149,15 +147,15 @@
 			body: JSON.stringify({ 'token': $authToken, 'id': addLinkId }),
 		})
 		const parsed = await response.json();
-		isLoading = false;
-		addLinkId = 0;
 		if (parsed.status) {
 			success = 'Link został poprawnie usunięty';
-			loadLinks();
+			links = links.filter((value) => value.id != addLinkId);
 		} else {
 			error = parsed.error;
 			success = ''
 		}
+		isLoading = false;
+		addLinkId = 0;
 	};
 
 	const handleSendMailLink = async () => {
@@ -182,6 +180,22 @@
 			success = ''
 		}
 	};
+
+	let isOpenAlertCopyToClipboard = false;
+	let timeoutAlertCopyToClipboard;
+	const copyToClipboard = (text) => {
+		isOpenAlertCopyToClipboard = true;
+		if(timeoutAlertCopyToClipboard){
+			clearTimeout(timeoutAlertCopyToClipboard);
+		}
+		timeoutAlertCopyToClipboard = setTimeout(() => isOpenAlertCopyToClipboard = false, 3000);
+		const el = document.createElement('textarea');
+		el.value = text;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+	}
 
 </script>
 
@@ -266,7 +280,10 @@
 							<button type="button" class="btn btn-secondary btn-sm" on:click={() => toggleModalSendMail(index)}>Wyślij mail</button>
 						</td>
 						<td>{link.license_number}</td>
-						<td><a href="{link.link}" target="_blank">{link.link}</a></td>
+						<td>
+							<p class="mb-1"><a href="{link.link}" target="_blank">{link.link}</a></p>
+							<button type="button" class="btn btn-secondary btn-sm" on:click={() => copyToClipboard(link.link)}>Kopiuj do schowka</button>
+						</td>
 						<td>{link.date_finish}</td>
 						<td>{link.download_limit}</td>
 						<td>{link.date}</td>
@@ -309,6 +326,11 @@
 				</ModalFooter>
 			</form>
 		</Modal>
+
+		<Toast isOpen={isOpenAlertCopyToClipboard} class="toast-fixed">
+      <ToastHeader>Skopiowano do schowka</ToastHeader>
+      <ToastBody>Link do pobrania skryptu został poprawnie skopiowany do schowka</ToastBody>
+    </Toast>
 
 	{/if}
 </div>

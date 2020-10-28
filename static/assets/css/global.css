@@ -1,3 +1,6 @@
 .card{
   margin-bottom: 30px;
 }
+.toast-fixed{
+  position: fixed; bottom: 20px; right: 20px; z-index: 10;
+}
