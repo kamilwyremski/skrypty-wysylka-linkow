@@ -3,7 +3,7 @@
 	"theme_color": "#ededed",
 	"name": "Skrypty stron www",
 	"short_name": "Skrypty stron www",
-	"display": "minimal-ui",
+	"display": "fullscreen",
 	"start_url": "/",
 	"icons": [
 		{
