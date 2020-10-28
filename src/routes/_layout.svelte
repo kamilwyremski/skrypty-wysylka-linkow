@@ -15,10 +15,16 @@
 					Accept: "application/json",
 				},
 				body: JSON.stringify({ token: $authToken }),
+			})
+			.then(response => response.json())
+			.catch(() => {
+				$authToken = '';
 			});
-			const parsed = await response.json();
-			if (parsed.status) {
+
+			if (response.status) {
 				$isLogged = true;
+			}else{
+				$authToken = '';
 			}
 		}
   });

@@ -16,13 +16,17 @@
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+    })
+    .then(response => response.json())
+    .catch((e) => {
+      error = e;
     });
-    const parsed = await response.json();
+
     isLoading = false;
-    if (parsed.session_code) {
-      session_code = parsed.session_code;
+    if (response.session_code) {
+      session_code = response.session_code;
     } else {
-      error = parsed.error;
+      error = response.error;
     }
   });
   
@@ -37,15 +41,19 @@
         Accept: "application/json",
       },
       body: JSON.stringify({ email, password, session_code }),
+    })
+    .then(response => response.json())
+    .catch((e) => {
+      error = e;
     });
-    const parsed = await response.json();
+
     isLoading = false;
-    if (parsed.token) {
-      $authToken = parsed.token;
+    if (response?.token) {
+      $authToken = response.token;
       $isLogged = true;
     } else {
-      session_code = parsed.session_code;
-      error = parsed.error;
+      session_code = response?.session_code || '';
+      error = response?.error || error;
       $isLogged = false;
     }
   };
