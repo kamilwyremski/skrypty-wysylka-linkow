@@ -43,10 +43,10 @@ self.addEventListener('fetch', event => {
 	if (url.hostname === self.location.hostname && url.port !== self.location.port) return;
 
 	// always serve static files and bundler-generated assets from cache
-	if (url.host === self.location.host && cached.has(url.pathname)) {
-		event.respondWith(caches.match(event.request));
-		return;
-	}
+	// if (url.host === self.location.host && cached.has(url.pathname)) {
+	// 	event.respondWith(caches.match(event.request));
+	// 	return;
+	// }
 
 	// for pages, you might want to serve a shell `service-worker-index.html` file,
 	// which Sapper has generated for you. It's not right for every
@@ -67,16 +67,11 @@ self.addEventListener('fetch', event => {
 		caches
 			.open(`offline${timestamp}`)
 			.then(async cache => {
-				try {
-					const response = await fetch(event.request);
-					cache.put(event.request, response.clone());
-					return response;
-				} catch(err) {
-					const response = await cache.match(event.request);
-					if (response) return response;
-
-					throw err;
-				}
+				let response = await cache.match(event.request);
+				if (response) return response;
+				response = await fetch(event.request);
+				cache.put(event.request, response.clone());
+				return response;
 			})
 	);
 });
