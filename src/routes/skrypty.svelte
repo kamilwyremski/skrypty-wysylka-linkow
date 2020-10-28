@@ -64,7 +64,7 @@
     } else {
 			error = parsed.error;
 			success = ''
-    }
+		}
 	};
 
 	const handleAddScript = async () => {
@@ -136,7 +136,7 @@
 		isLoading = false;
 		if (parsed.status) {
 			success = 'Skrypt został poprawnie usunięty';
-			loadScripts();
+			scripts = scripts.filter((value) => value.id != removeScriptId);
 		} else {
 			error = parsed.error;
 			success = ''
@@ -150,7 +150,7 @@
 </svelte:head>
 
 <div class="container mt-5 mb-5">
-	<h1 class="mb-2">Skrypty stron wwww</h1>
+	<h1 class="mb-4">Skrypty stron www</h1>
 
 	{#if error}
 		<h5 class="text-danger">{error}</h5>
