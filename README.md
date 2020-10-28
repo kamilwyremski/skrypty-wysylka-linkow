@@ -4,7 +4,7 @@ Aplikacja do wysyłki linków do pobrania skryptów
 ## Uruchomienie projektu
 
 ```bash
-cd my-app
+cd skrypt-wysylka-linkow
 npm install # or yarn
 npm run dev
 ```
