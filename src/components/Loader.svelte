@@ -6,7 +6,7 @@
     display: block;  width: 97px;
   }
   .preloader .cssload-loading i {
-    width: 19px;   height: 19px; display: inline-block;  border-radius: 50%; background: #8b3aca;
+    width: 19px;   height: 19px; display: inline-block;  border-radius: 50%; background: #4cbb17;
   }
   .preloader .cssload-loading i:first-child {
     opacity: 0; animation: cssload-loading-ani2 0.58s linear infinite; transform: translate(-19px);
