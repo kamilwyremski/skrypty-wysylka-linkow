@@ -18,7 +18,7 @@
 	let addLinkLicenseNumber = 0;
 	let d = new Date();
 	d.setDate(new Date().getDate()+7);
-	let addLinkDateFinish = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+ ("0" + d.getDate()).slice(-2) ;
+	let addLinkDateFinish = d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + (("0" + d.getDate()).slice(-2));
 	let addLinkDownloadLimit = 5;
 	let SendMailLinkSubject = '';
 	let SendMailLinkContent = '';
