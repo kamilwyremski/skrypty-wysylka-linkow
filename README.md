@@ -5,7 +5,7 @@ Aplikacja do wysyłki linków do pobrania skryptów
 
 ```bash
 cd skrypt-wysylka-linkow
-npm install # or yarn
+npm install
 npm run dev
 ```
 
