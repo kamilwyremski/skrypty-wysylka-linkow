@@ -112,7 +112,7 @@
 		const parsed = await response.json();
 		isLoading = false;
 		if (parsed.status) {
-			success = 'Skrypt został poprawnie zaktualizowany';
+			success = 'Skrypt '+editScriptName+' został poprawnie zaktualizowany';
 			loadScripts();
 		} else {
 			error = parsed.error;
