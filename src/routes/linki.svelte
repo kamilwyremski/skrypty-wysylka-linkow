@@ -56,7 +56,7 @@
 		if(links[index]){
 			addLinkId = links[index].id
 			SendMailLinkSubject = 'Skrypt '+links[index].script_name+' jest już dostępny do pobrania!'
-			SendMailLinkContent = "Witaj!\nAby pobrać skrypt "+links[index].script_name+" kliknij w link "+links[index].link+"\nLink będzie aktywny do "+links[index].date_finish+"\nSkrypt możesz pobrać "+links[index].download_limit+" razy\nProsimy zapoznać się koniecznie z instrukcją instalacji i konfiguracji: https://blog.wyremski.pl/instrukcja-instalacji-i-konfiguracji-skryptow/\nPozdrawiamy\nZespół IT Works Better"
+			SendMailLinkContent = "Dzień dobry!\nAby pobrać skrypt "+links[index].script_name+" kliknij w link "+links[index].link+"\nLink będzie aktywny do "+links[index].date_finish+"\nSkrypt możesz pobrać "+links[index].download_limit+" razy\nProsimy zapoznać się koniecznie z instrukcją instalacji i konfiguracji: https://blog.wyremski.pl/instrukcja-instalacji-i-konfiguracji-skryptow/\nPozdrawiamy\nZespół IT Works Better"
 		}
 		openModalSendMail = !openModalSendMail
 	}
@@ -71,13 +71,17 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
-    if (parsed.scripts) {
-      scripts = parsed.scripts;
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
+    if (response.scripts) {
+      scripts = response.scripts;
     }
 	};
 
@@ -87,16 +91,20 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-    if (parsed.links) {
-      links = parsed.links;
+    if (response.links) {
+      links = response.links;
     } else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
     }
 	};
@@ -104,7 +112,13 @@
 	const handleAddLink = async () => {
 		isLoading = true;
 		openModalAdd = false;
-		let body = { 'token': $authToken, 'script_id': addLinkScript, 'email': addLinkEmail, 'license_number': addLinkLicenseNumber, 'date_finish': addLinkDateFinish, 'download_limit': addLinkDownloadLimit };
+		let body = {
+			'script_id': addLinkScript, 
+			'email': addLinkEmail, 
+			'license_number': addLinkLicenseNumber, 
+			'date_finish': addLinkDateFinish, 
+			'download_limit': addLinkDownloadLimit 
+		};
 		let url = API_URL+'/add-link'
 		if(addLinkId){
 			url = API_URL+'/edit-link'
@@ -117,19 +131,24 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
 			body: JSON.stringify(body),
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
 		addLinkScript = '';
 		addLinkEmail = '';
-		if (parsed.status) {
+		if (response.status) {
 			success = 'Link został poprawnie dodany. Nie zapomnij wysłać maila!';
 			loadLinks();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -142,16 +161,21 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken, 'id': addLinkId }),
+			body: JSON.stringify({'id': addLinkId }),
 		})
-		const parsed = await response.json();
-		if (parsed.status) {
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
+		if (response.status) {
 			success = 'Link został poprawnie usunięty';
 			links = links.filter((value) => value.id != addLinkId);
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 		isLoading = false;
@@ -166,17 +190,22 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken, 'id': addLinkId, 'subject': SendMailLinkSubject, 'content': SendMailLinkContent }),
+			body: JSON.stringify({'id': addLinkId, 'subject': SendMailLinkSubject, 'content': SendMailLinkContent }),
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
 		addLinkId = 0;
-		if (parsed.status) {
+		if (response.status) {
 			success = 'Mail został poprawnie wysłany';
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -216,7 +245,7 @@
 	<button type="button" class="btn btn-primary mt-2 mb-4" on:click={toggleModalAdd}>Dodaj nowy link</button>
 
 	<Modal isOpen={openModalAdd} {toggleModalAdd}>
-		<ModalHeader {toggleModalAdd}>Dodaj nowy link</ModalHeader>
+		<ModalHeader {toggleModalAdd}>{#if addLinkId}Edytuj{:else}Dodaj nowy{/if} link</ModalHeader>
 		<form on:submit|preventDefault="{handleAddLink}" method="post">
 			<ModalBody>
 				<div class="form-group">

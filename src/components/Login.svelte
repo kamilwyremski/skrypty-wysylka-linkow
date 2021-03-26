@@ -14,7 +14,7 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
       },
     })
     .then(response => response.json())
@@ -33,12 +33,12 @@
   const handleLogin = async () => {
 
     isLoading = true;
-
+    
     const response = await fetch(API_URL+'/login', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
       },
       body: JSON.stringify({ email, password, session_code }),
     })

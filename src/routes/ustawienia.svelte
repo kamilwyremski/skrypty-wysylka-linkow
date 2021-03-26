@@ -34,16 +34,20 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-    if (parsed.users) {
-      users = parsed.users;
+    if (response.users) {
+      users = response.users;
     } else {
-			error = parsed.error;
+			error = response.error || error;
     }
 	};
 
@@ -62,16 +66,20 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-    if (parsed.logs) {
-      logs = parsed.logs;
+    if (response.logs) {
+      logs = response.logs;
     } else {
-			error = parsed.error;
+			error = response.error || error;
     }
 	};
 
@@ -86,20 +94,25 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken, 'email': newEmail, 'password': newPassword }),
+			body: JSON.stringify({ 'email': newEmail, 'password': newPassword }),
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-		if (parsed.status) {
+		if (response.status) {
 			error = '';
 			success = 'Dane zostały poprawnie zaktualizowane';
 			newPassword = '';
 			newRepeatPassword = '';
 			loadUsers();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -115,13 +128,18 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+				"Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken, 'email': newUserEmail, 'password': newUserPassword }),
+			body: JSON.stringify({ 'email': newUserEmail, 'password': newUserPassword }),
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-		if (parsed.status) {
+		if (response.status) {
 			error = '';
 			success = 'Użytkownik został poprawnie dodany';
 			newUserEmail = '';
@@ -129,7 +147,7 @@
 			newUserRepeatPassword = '';
 			loadUsers();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -142,10 +160,11 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
+		})
+
 		$authToken = '';
     $isLogged = false;
 	};
@@ -158,18 +177,23 @@
 			method: "POST",
 			headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken, 'id': removeUserId }),
+			body: JSON.stringify({ 'id': removeUserId }),
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-		if (parsed.status) {
+		if (response.status) {
 			error = '';
 			success = 'Użytkownik został poprawnie usunięty';
 			loadUsers();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = '';
 		}
 	};

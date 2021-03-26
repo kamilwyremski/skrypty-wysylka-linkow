@@ -13,16 +13,20 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+				"Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-    if (parsed.logs) {
-      logs = parsed.logs;
+    if (response.logs) {
+      logs = response.logs;
     } else {
-			error = parsed.error;
+			error = response.error || error;
     }
 	});
 </script>

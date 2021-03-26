@@ -8,11 +8,12 @@
 
 	onMount(async () => {
 		if($authToken){
+
 			const response = await fetch(API_URL+'/check-token', {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Accept: "application/json",
+					"Accept": "application/json",
 				},
 				body: JSON.stringify({ token: $authToken }),
 			})
@@ -21,7 +22,7 @@
 				$authToken = '';
 			});
 
-			if (response.status) {
+			if(response.status) {
 				$isLogged = true;
 			}else{
 				$authToken = '';

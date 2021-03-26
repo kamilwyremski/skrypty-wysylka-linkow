@@ -53,16 +53,20 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+				'Authorization': 'Bearer ' + $authToken
 			},
-			body: JSON.stringify({ 'token': $authToken }),
-		});
-		const parsed = await response.json();
+		})
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-    if (parsed.scripts) {
-      scripts = parsed.scripts;
+    if (response.scripts) {
+      scripts = response.scripts;
     } else {
-			error = parsed.error;
+			error = response.error;
 			success = ''
 		}
 	};
@@ -73,21 +77,27 @@
 		success = 'Wysyłam skrypt na serwer...';
 
 		const formData = new FormData();
-		formData.append('token', $authToken);
 		formData.append('name', newScriptName);
     formData.append('file', files[0]);
 		const response = await fetch(API_URL+'/add-script', {
 			method: "POST",
+			headers: {
+				'Authorization': 'Bearer ' + $authToken
+			},
 			body: formData
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
 		newScriptName = '';
-		if (parsed.status) {
+		if (response.status) {
 			success = 'Skrypt został poprawnie wysłany';
 			loadScripts();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -98,7 +108,6 @@
 		success = 'Aktualizuje skrypt na serwerze...';
 
 		const formData = new FormData();
-		formData.append('token', $authToken);
 		formData.append('name', editScriptName);
 		formData.append('filename', editScriptFilename);
 		formData.append('id', editScriptId);
@@ -107,15 +116,22 @@
 		}
 		const response = await fetch(API_URL+'/edit-script', {
 			method: "POST",
+			headers: {
+				'Authorization': 'Bearer ' + $authToken
+			},
 			body: formData
-		})
-		const parsed = await response.json();
+		})	
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-		if (parsed.status) {
+		if (response.status) {
 			success = 'Skrypt '+editScriptName+' został poprawnie zaktualizowany';
 			loadScripts();
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
@@ -126,19 +142,25 @@
 		success = 'Usuwam skrypt na serwerze...';
 
 		const formData = new FormData();
-		formData.append('token', $authToken);
 		formData.append('id', removeScriptId);
 		const response = await fetch(API_URL+'/remove-script', {
 			method: "POST",
+			headers: {
+				'Authorization': 'Bearer ' + $authToken
+			},
 			body: formData
 		})
-		const parsed = await response.json();
+		.then(response => response.json())
+    .catch((e) => {
+      error = e;
+    });
+
 		isLoading = false;
-		if (parsed.status) {
+		if (response.status) {
 			success = 'Skrypt został poprawnie usunięty';
 			scripts = scripts.filter((value) => value.id != removeScriptId);
 		} else {
-			error = parsed.error;
+			error = response.error || error;
 			success = ''
 		}
 	};
