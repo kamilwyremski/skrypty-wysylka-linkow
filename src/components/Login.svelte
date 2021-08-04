@@ -5,8 +5,8 @@
 
   let password = "";
   let email = "";
-  let error;
-  let isLoading = true;
+  let error = "";
+  let isLoading = false;
   let session_code = '';
 
   onMount(async () => {
