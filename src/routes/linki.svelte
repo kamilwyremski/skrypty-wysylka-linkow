@@ -294,9 +294,9 @@
 					<th>Email</th>
 					<th>Numer licencji</th>
 					<th>Link</th>
-					<th>Data końca</th>
+					<th class="text-nowrap">Data końca</th>
 					<th>Pozostało pobrań</th>
-					<th>Data</th>
+					<th class="text-nowrap">Data</th>
 					<th>Edytuj</th>
 					<th>Usuń</th>
 				</tr>
@@ -310,12 +310,11 @@
 						</td>
 						<td>{link.license_number}</td>
 						<td>
-							<p class="mb-1"><a href="{link.link}" target="_blank">{link.link}</a></p>
 							<button type="button" class="btn btn-secondary btn-sm" on:click={() => copyToClipboard(link.link)}>Kopiuj do schowka</button>
 						</td>
-						<td>{link.date_finish}</td>
+						<td class="text-nowrap">{link.date_finish}</td>
 						<td>{link.download_limit}</td>
-						<td>{link.date}</td>
+						<td class="text-nowrap">{link.date}</td>
 						<td><button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button></td>
 						<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemove(index)}><i class="fas fa-trash"></i></button></td>
 					</tr>

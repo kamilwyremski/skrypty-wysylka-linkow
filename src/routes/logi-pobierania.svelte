@@ -56,7 +56,7 @@
 					<th>Link ID</th>
 					<th>Skrypt</th>
 					<th>IP</th>
-					<th>Data</th>
+					<th class="text-nowrap">Data</th>
 				</tr>
 				{#each logs as log, index}
 					<tr class:table-danger={log.correct!=1}>
@@ -66,7 +66,7 @@
 						<td>{log.link_id}</td>
 						<td>{log.script_name}</td>
 						<td>{log.ip}</td>
-						<td>{log.date}</td>
+						<td class="text-nowrap">{log.date}</td>
 					</tr>
 				{/each}
 			</table>

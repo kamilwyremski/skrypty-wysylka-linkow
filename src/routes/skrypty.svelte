@@ -216,7 +216,7 @@
 					<th>Nazwa pliku</th>
 					<th>Plik</th>
 					<th>Rozmiar</th>
-					<th>Data aktualizacji</th>
+					<th class="text-nowrap">Data aktualizacji</th>
 					<th>Edytuj</th>
 					<th>Usuń</th>
 				</tr>
@@ -229,7 +229,7 @@
 						<!-- svelte-ignore missing-declaration -->
 						<td><a href="{API_URL}/upload/{script.file}" download target="_blank">{script.file}</a></td>
 						<td>{script.filesize}</td>
-						<td>{script.date}</td>
+						<td class="text-nowrap">{script.date}</td>
 						<td>
 							<button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button>
 						</td>

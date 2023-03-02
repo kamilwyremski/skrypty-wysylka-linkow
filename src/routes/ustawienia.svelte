@@ -319,7 +319,7 @@
 							<th>Email</th>
 							<th class="text-center">Zalogowany</th>
 							<th>IP</th>
-							<th>Data</th>
+							<th class="text-nowrap">Data</th>
 						</tr>
 						{#each logs as log, index}
 							<tr class:table-danger={log.logged!=1}>
@@ -327,7 +327,7 @@
 								<td>{log.email}</td>
 								<td class="text-center">{#if log.logged==1}Tak{:else}Nie{/if}</td>
 								<td>{log.ip}</td>
-								<td>{log.date}</td>
+								<td class="text-nowrap">{log.date}</td>
 							</tr>
 						{/each}
 					</table>
