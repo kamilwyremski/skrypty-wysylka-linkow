@@ -11,7 +11,7 @@ npm run dev
 
 Zmień nazwę pliku .env - sample na .env i uzupełnij prawidłowy adres url do API
 
-## Tryb produkcji
+## Eksport
 
 ```bash
 npm run export
