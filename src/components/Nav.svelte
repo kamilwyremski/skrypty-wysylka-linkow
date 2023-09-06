@@ -32,7 +32,7 @@
       <a class="nav-link" on:click={() => (isOpen = !isOpen)} class:active={segment === 'logi-pobierania'} aria-current="{segment === 'logi-pobierania' ? 'page' : undefined}" href="logi-pobierania">Logi pobierania{#if segment === 'logi-pobierania'} <span class="sr-only">(current)</span>{/if}</a>
       <a class="nav-link" on:click={() => (isOpen = !isOpen)} class:active={segment === 'ustawienia'} aria-current="{segment === 'ustawienia' ? 'page' : undefined}" href="ustawienia">Ustawienia{#if segment === 'ustawienia'} <span class="sr-only">(current)</span>{/if}</a>
     </div>
-    <div class="navbar-nav ml-auto">
+    <div class="navbar-nav ms-auto">
       <button type="button" class="btn btn-link nav-link" on:click={logOut}>Wyloguj</button>
     </div>
   </Collapse>

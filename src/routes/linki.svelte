@@ -13,7 +13,7 @@
 	let success = '';
 	let isLoading = true;
 	let addLinkId = 0;
-	let addLinkScript = 0;
+	let addLinkScript = "0";
 	let addLinkEmail = '';
 	let addLinkLicenseNumber = 0;
 	let d = new Date();
@@ -142,7 +142,7 @@
     });
 
 		isLoading = false;
-		addLinkScript = '';
+		addLinkScript = "0";
 		addLinkEmail = '';
 		if (response.status) {
 			success = 'Link został poprawnie dodany. Nie zapomnij wysłać maila!';
@@ -218,12 +218,7 @@
 			clearTimeout(timeoutAlertCopyToClipboard);
 		}
 		timeoutAlertCopyToClipboard = setTimeout(() => isOpenAlertCopyToClipboard = false, 3000);
-		const el = document.createElement('textarea');
-		el.value = text;
-		document.body.appendChild(el);
-		el.select();
-		document.execCommand('copy');
-		document.body.removeChild(el);
+		navigator.clipboard.writeText(text);
 	}
 
 </script>
@@ -248,7 +243,7 @@
 		<ModalHeader {toggleModalAdd}>{#if addLinkId}Edytuj{:else}Dodaj nowy{/if} link</ModalHeader>
 		<form on:submit|preventDefault="{handleAddLink}" method="post">
 			<ModalBody>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="script">Skrypt <span class="text-danger">*</span></label>
 					<select bind:value={addLinkScript} required class="form-control">
 						<option value="0">-- wybierz --</option>
@@ -257,19 +252,19 @@
 						{/each}
 					</select>
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="name">Adres email <span class="text-danger">*</span></label>
 					<input type="email" class="form-control" bind:value="{addLinkEmail}" required maxlength="128">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="license_number">Numer licencji</label>
 					<input type="number" class="form-control" bind:value="{addLinkLicenseNumber}" min="0">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="date_finish">Data końca <span class="text-danger">*</span></label>
 					<input type="date" class="form-control" bind:value="{addLinkDateFinish}" required>
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="download_limit">Limit pobrań <span class="text-danger">*</span></label>
 					<input type="number" class="form-control" bind:value="{addLinkDownloadLimit}" required min="0">
 				</div>
@@ -287,38 +282,42 @@
 
 	{#if links.length}
 		<div class="table-responsive mt-2">
-			<table class="table table-striped table-hover table-sm">
-				<tr>
-					<th>ID</th>
-					<th>Skrypt</th>
-					<th>Email</th>
-					<th>Numer licencji</th>
-					<th>Link</th>
-					<th class="text-nowrap">Data końca</th>
-					<th>Pozostało pobrań</th>
-					<th class="text-nowrap">Data</th>
-					<th>Edytuj</th>
-					<th>Usuń</th>
-				</tr>
-				{#each links as link, index}
-					<tr class:table-danger={!link.active}>
-						<td>{link.id}</td>
-						<td>{link.script_name}</td>
-						<td>
-							<p class="mb-1"><a href="mailto:{link.email}">{link.email}</a></p>
-							<button type="button" class="btn btn-secondary btn-sm" on:click={() => toggleModalSendMail(index)}>Wyślij mail</button>
-						</td>
-						<td>{link.license_number}</td>
-						<td>
-							<button type="button" class="btn btn-secondary btn-sm" on:click={() => copyToClipboard(link.link)}>Kopiuj do schowka</button>
-						</td>
-						<td class="text-nowrap">{link.date_finish}</td>
-						<td>{link.download_limit}</td>
-						<td class="text-nowrap">{link.date}</td>
-						<td><button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button></td>
-						<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemove(index)}><i class="fas fa-trash"></i></button></td>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Skrypt</th>
+						<th>Email</th>
+						<th>Numer licencji</th>
+						<th>Link</th>
+						<th class="text-nowrap">Data końca</th>
+						<th>Pozostało pobrań</th>
+						<th class="text-nowrap">Data</th>
+						<th>Edytuj</th>
+						<th>Usuń</th>
 					</tr>
-				{/each}
+				</thead>
+				<tbody>
+					{#each links as link, index}
+						<tr class:table-danger={!link.active}>
+							<td>{link.id}</td>
+							<td>{link.script_name}</td>
+							<td>
+								<p class="mb-1"><a href="mailto:{link.email}">{link.email}</a></p>
+								<button type="button" class="btn btn-secondary btn-sm" on:click={() => toggleModalSendMail(index)}>Wyślij mail</button>
+							</td>
+							<td>{link.license_number}</td>
+							<td>
+								<button type="button" class="btn btn-secondary btn-sm" on:click={() => copyToClipboard(link.link)}>Kopiuj do schowka</button>
+							</td>
+							<td class="text-nowrap">{link.date_finish}</td>
+							<td>{link.download_limit}</td>
+							<td class="text-nowrap">{link.date}</td>
+							<td><button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button></td>
+							<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemove(index)}><i class="fas fa-trash"></i></button></td>
+						</tr>
+					{/each}
+				</tbody>
 			</table>
 		</div>
 
@@ -326,11 +325,11 @@
 			<ModalHeader {toggleModalSendMail}>Wyślij mail z linkiem</ModalHeader>
 			<form on:submit|preventDefault="{handleSendMailLink}" method="post">
 				<ModalBody>
-					<div class="form-group">
+					<div class="mb-3">
 						<label for="subject">Temat <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" name="subject" bind:value="{SendMailLinkSubject}" required>
 					</div>
-					<div class="form-group">
+					<div class="mb-3">
 						<label for="content">Treść <span class="text-danger">*</span></label>
 						<textarea class="form-control" name="content" style="min-height:200px" required bind:value="{SendMailLinkContent}"></textarea>
 					</div>

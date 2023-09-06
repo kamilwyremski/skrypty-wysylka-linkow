@@ -187,11 +187,11 @@
 		<ModalHeader {toggleModalAdd}>Dodaj nowy skrypt</ModalHeader>
 		<form on:submit|preventDefault="{handleAddScript}" method="post" enctype="multipart/form-data">
 			<ModalBody>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="name">Nazwa <span class="text-danger">*</span></label>
 					<input type="text" class="form-control" bind:value="{newScriptName}" required maxlength="128">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="file">Załaduj plik <span class="text-danger">*</span></label>
 					<input type="file" class="form-control" bind:files required>
 				</div>
@@ -210,32 +210,36 @@
 	{#if scripts.length}
 		<div class="table-responsive mt-2">
 			<table class="table table-striped table-hover">
-				<tr>
-					<th>ID</th>
-					<th>Nazwa</th>
-					<th>Nazwa pliku</th>
-					<th>Plik</th>
-					<th>Rozmiar</th>
-					<th class="text-nowrap">Data aktualizacji</th>
-					<th>Edytuj</th>
-					<th>Usuń</th>
-				</tr>
-				{#each scripts as script, index}
+				<thead>
 					<tr>
-						<td>{script.id}</td>
-						<td>{script.name}</td>
-						<!-- svelte-ignore missing-declaration -->
-						<td><a href="{API_URL}/download.php?token={$authToken}&script_id={script.id}" download target="_blank">{script.filename}</a></td>
-						<!-- svelte-ignore missing-declaration -->
-						<td><a href="{API_URL}/upload/{script.file}" download target="_blank">{script.file}</a></td>
-						<td>{script.filesize}</td>
-						<td class="text-nowrap">{script.date}</td>
-						<td>
-							<button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button>
-						</td>
-						<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemove(index)}><i class="fas fa-trash"></i></button></td>
+						<th>ID</th>
+						<th>Nazwa</th>
+						<th>Nazwa pliku</th>
+						<th>Plik</th>
+						<th>Rozmiar</th>
+						<th class="text-nowrap">Data aktualizacji</th>
+						<th>Edytuj</th>
+						<th>Usuń</th>
 					</tr>
-				{/each}
+				</thead>
+				<tbody>
+					{#each scripts as script, index}
+						<tr>
+							<td>{script.id}</td>
+							<td>{script.name}</td>
+							<!-- svelte-ignore missing-declaration -->
+							<td><a href="{API_URL}/download.php?token={$authToken}&script_id={script.id}" download target="_blank">{script.filename}</a></td>
+							<!-- svelte-ignore missing-declaration -->
+							<td><a href="{API_URL}/upload/{script.file}" download target="_blank">{script.file}</a></td>
+							<td>{script.filesize}</td>
+							<td class="text-nowrap">{script.date}</td>
+							<td>
+								<button type="button" class="btn btn-link" on:click={() => toggleModalEdit(index)}><i class="fas fa-edit"></i></button>
+							</td>
+							<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemove(index)}><i class="fas fa-trash"></i></button></td>
+						</tr>
+					{/each}
+				</tbody>
 			</table>
 		</div>
 
@@ -243,15 +247,15 @@
 			<ModalHeader {toggleModalEdit}>Edytuj skrypt</ModalHeader>
 			<form on:submit|preventDefault="{handleEditScript}" method="post" enctype="multipart/form-data">
 				<ModalBody>
-					<div class="form-group">
+					<div class="mb-3">
 						<label for="name">Nazwa <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" bind:value="{editScriptName}" required maxlength="128">
 					</div>
-					<div class="form-group">
+					<div class="mb-3">
 						<label for="name">Zmień nazwę pliku <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" bind:value="{editScriptFilename}" required maxlength="128">
 					</div>
-					<div class="form-group">
+					<div class="mb-3">
 						<label for="file">LUB załaduj nowy plik</label>
 						<input type="file" class="form-control" bind:files>
 					</div>

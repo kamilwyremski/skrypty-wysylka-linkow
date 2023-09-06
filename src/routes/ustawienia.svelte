@@ -224,15 +224,15 @@
 				<div class="card-body">
 					<h5 class="card-title">Zmień dane dostępowe do panelu admina</h5>
 					<form on:submit|preventDefault="{handleChangeUser}" method="post">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="new_email">Nowy adres email</label>
 							<input type="text" class="form-control" bind:value="{newEmail}" id="new_email" required title="Wpisz swój nowy adres email" maxlength="64">
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="new_password">Nowe hasło</label>
 							<input type="password" class="form-control" bind:value="{newPassword}" id="new_password" required title="Wpisz swoje nowe hasło">
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="repeat_new_password">Powtórz nowe hasło</label>
 							<input type="password" class="form-control" bind:value="{newRepeatPassword}"  id="repeat_new_password" required title="Wpisz swoje nowe hasło">
 						</div>
@@ -246,15 +246,15 @@
 				<div class="card-body">
 					<h5 class="card-title">Dodaj użytkownika</h5>
 					<form on:submit|preventDefault="{handleAddUser}" method="post">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="new_user_email">Email</label>
 							<input type="text" class="form-control" bind:value="{newUserEmail}" id="new_user_email" required title="Wpisz login" maxlength="32">
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="new_user_password">Hasło</label>
 							<input type="password" class="form-control" bind:value="{newUserPassword}" id="password" required title="Wpisz hasło">
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="new_user_repeat_password">Powtórz hasło</label>
 							<input type="password" class="form-control" bind:value="{newUserRepeatPassword}" id="new_user_repeat_password" required title="Powtórz hasło">
 						</div>
@@ -272,13 +272,15 @@
 					{#if users.length}
 						<div class="table-responsive">
 							<table class="table table-striped table-hover table-sm">
-								{#each users as user, index}
-									<tr>
-										<td>{index+1}</td>
-										<td>{user.email}</td>
-										<td><button type="button" class="btn btn-link text-danger" on:click={() => toggleModalRemoveUser(index)}><i class="fas fa-trash"></i></button></td>
-									</tr>
-								{/each}
+								<tbody>
+									{#each users as user, index}
+										<tr>
+											<td>{index+1}</td>
+											<td>{user.email}</td>
+											<td><button type="button" class="btn btn-link text-danger p-0" on:click={() => toggleModalRemoveUser(index)}><i class="fas fa-trash"></i></button></td>
+										</tr>
+									{/each}
+								</tbody>
 							</table>
 						</div>
 
@@ -314,22 +316,26 @@
 				<h5 class="card-title">Logi logowania</h5>
 				<div class="table-responsive">
 					<table class="table table-striped table-hover table-sm">
-						<tr>
-							<th></th>
-							<th>Email</th>
-							<th class="text-center">Zalogowany</th>
-							<th>IP</th>
-							<th class="text-nowrap">Data</th>
-						</tr>
-						{#each logs as log, index}
-							<tr class:table-danger={log.logged!=1}>
-								<td>{index+1}</td>
-								<td>{log.email}</td>
-								<td class="text-center">{#if log.logged==1}Tak{:else}Nie{/if}</td>
-								<td>{log.ip}</td>
-								<td class="text-nowrap">{log.date}</td>
+						<thead>
+							<tr>
+								<th></th>
+								<th>Email</th>
+								<th class="text-center">Zalogowany</th>
+								<th>IP</th>
+								<th class="text-nowrap">Data</th>
 							</tr>
-						{/each}
+						</thead>
+						<tbody>
+							{#each logs as log, index}
+								<tr class:table-danger={log.logged!=1}>
+									<td>{index+1}</td>
+									<td>{log.email}</td>
+									<td class="text-center">{#if log.logged==1}Tak{:else}Nie{/if}</td>
+									<td>{log.ip}</td>
+									<td class="text-nowrap">{log.date}</td>
+								</tr>
+							{/each}
+						</tbody>
 					</table>
 				</div>
 			</div>

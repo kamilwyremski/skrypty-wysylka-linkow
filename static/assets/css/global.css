@@ -4,3 +4,11 @@
 .toast-fixed{
   position: fixed; bottom: 20px; right: 20px; z-index: 10;
 }
+a{
+  color: #007bff;
+  text-decoration: none;
+}
+a:not(.nav-link):hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

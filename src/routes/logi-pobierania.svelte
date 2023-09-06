@@ -49,26 +49,30 @@
 	{#if logs.length}
 		<div class="table-responsive mt-2">
 			<table class="table table-striped table-hover table-sm">
-				<tr>
-					<th></th>
-					<th>Link</th>
-					<th class="text-center">Prawidłowy</th>
-					<th>Link ID</th>
-					<th>Skrypt</th>
-					<th>IP</th>
-					<th class="text-nowrap">Data</th>
-				</tr>
-				{#each logs as log, index}
-					<tr class:table-danger={log.correct!=1}>
-						<td>{index+1}</td>
-						<td>{log.link}</td>
-						<td class="text-center">{#if log.correct==1}Tak{:else}Nie{/if}</td>
-						<td>{log.link_id}</td>
-						<td>{log.script_name}</td>
-						<td>{log.ip}</td>
-						<td class="text-nowrap">{log.date}</td>
+				<thead>
+					<tr>
+						<th></th>
+						<th>Link</th>
+						<th class="text-center">Prawidłowy</th>
+						<th>Link ID</th>
+						<th>Skrypt</th>
+						<th>IP</th>
+						<th class="text-nowrap">Data</th>
 					</tr>
-				{/each}
+				</thead>
+				<tbody>
+					{#each logs as log, index}
+						<tr class:table-danger={log.correct!=1}>
+							<td>{index+1}</td>
+							<td>{log.link}</td>
+							<td class="text-center">{#if log.correct==1}Tak{:else}Nie{/if}</td>
+							<td>{log.link_id}</td>
+							<td>{log.script_name}</td>
+							<td>{log.ip}</td>
+							<td class="text-nowrap">{log.date}</td>
+						</tr>
+					{/each}
+				</tbody>
 			</table>
 		</div>
 	{/if}
