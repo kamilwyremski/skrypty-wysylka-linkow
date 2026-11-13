@@ -230,7 +230,7 @@
 							<!-- svelte-ignore missing-declaration -->
 							<td><a href="{API_URL}/download.php?token={$authToken}&script_id={script.id}" download target="_blank">{script.filename}</a></td>
 							<!-- svelte-ignore missing-declaration -->
-							<td><a href="{API_URL}/upload/{script.file}" download target="_blank">{script.file}</a></td>
+							<td><a href="{API_URL}/upload/{script.file}?token={$authToken}" download target="_blank">{script.file}</a></td>
 							<td>{script.filesize}</td>
 							<td class="text-nowrap">{script.date}</td>
 							<td>

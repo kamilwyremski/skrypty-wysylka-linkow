@@ -41,6 +41,12 @@ if(isset($_GET['path'])){
 
 		$user = $admin->login($_POST);
 		if($user){
+			setcookie('admin_token', $_POST['session_code'], [
+				'expires' => time() + 86400 * 30,
+				'path' => '/',
+				'httponly' => true,
+				'samesite' => 'Lax'
+			]);
 			echo json_encode(['token' => $_POST['session_code']]);
 		}else{
 			echo json_encode(['error' => 'Wpisane dane są niepoprawne', 'session_code' => $admin->newSessionCode()]);
@@ -141,6 +147,12 @@ if(isset($_GET['path'])){
 			
 		}elseif($_GET['path'] == 'logout-all'){
 			
+			setcookie('admin_token', '', [
+				'expires' => time() - 3600,
+				'path' => '/',
+				'httponly' => true,
+				'samesite' => 'Lax'
+			]);
 			$admin->logOutAll();
 			echo json_encode(['status' => true]);
 			

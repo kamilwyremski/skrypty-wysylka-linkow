@@ -11,13 +11,13 @@ require_once(realpath(dirname(__FILE__)).'/functions.php');
 require_once(realpath(dirname(__FILE__)).'/admin.class.php');
 require_once(realpath(dirname(__FILE__)).'/script.class.php');
 
-$token = $_GET['token'] ?? getBearerToken();
+$token = $_GET['token'] ?? $_COOKIE['admin_token'] ?? getBearerToken();
 
-if(!empty($_GET['script_id']) and (int)$_GET['script_id']>0 and !empty($token)){
+if(!empty($_GET['script_id']) and (int)$_GET['script_id']>0){
 	
 	$admin = new Admin();
 	
-	if($admin->checkToken($token)){
+	if(!empty($token) and $admin->checkToken($token)){
 		$script = Script::show((int)$_GET['script_id']);
 		if(!$script){
 			die('Nieprawidlowy link');
@@ -35,8 +35,42 @@ if(!empty($_GET['script_id']) and (int)$_GET['script_id']>0 and !empty($token)){
 		header('Content-Length: ' . filesize($file_url));
 		readfile($file_url);
 		exit;
+	} else {
+		http_response_code(403);
+		die('Brak dostępu');
 	}
 	
+}elseif(!empty($_GET['file'])){
+
+	$admin = new Admin();
+	
+	if(!empty($token) and $admin->checkToken($token)){
+		$filename = basename($_GET['file']);
+		$file_url = _FOLDER_SCRIPTS_ . $filename;
+		if(!file_exists($file_url)){
+			die('Plik nie istnieje na serwerze');
+		}
+
+		$sth = $db->prepare('SELECT filename FROM scripts WHERE file=:file LIMIT 1');
+		$sth->bindValue(':file', $filename, PDO::PARAM_STR);
+		$sth->execute();
+		$script = $sth->fetch(PDO::FETCH_ASSOC);
+
+		$safeFilename = !empty($script['filename']) 
+			? str_replace(['"', "\r", "\n", '/', '\\'], '', $script['filename']) 
+			: $filename;
+
+		header('Content-Type: application/octet-stream');
+		header("Content-Transfer-Encoding: Binary"); 
+		header('Content-Disposition: attachment; filename="' . $safeFilename . '"'); 
+		header('Content-Length: ' . filesize($file_url));
+		readfile($file_url);
+		exit;
+	} else {
+		http_response_code(403);
+		die('Brak dostępu');
+	}
+
 }elseif(!empty($_GET['link'])){
 
 	$correct = false;
