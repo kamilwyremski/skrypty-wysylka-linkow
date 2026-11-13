@@ -62,33 +62,17 @@ class Admin {
 	
 	public function verifyPassword(string $password, string $dbPassword, ?int $userId = null): bool {
 		global $db;
-		$valid = false;
-		if (strlen($dbPassword) === 32 && ctype_xdigit($dbPassword)) {
-			// Legacy MD5 password check
-			if (hash_equals($dbPassword, md5($password))) {
-				$valid = true;
-				// Migrate to modern password_hash
-				if ($userId) {
-					$newHash = $this->createPassword($password);
-					$sth = $db->prepare('UPDATE admin SET password=:password WHERE id=:id');
-					$sth->bindValue(':password', $newHash, PDO::PARAM_STR);
-					$sth->bindValue(':id', $userId, PDO::PARAM_INT);
-					$sth->execute();
-				}
+		if (password_verify($password, $dbPassword)) {
+			if ($userId && password_needs_rehash($dbPassword, PASSWORD_DEFAULT)) {
+				$newHash = $this->createPassword($password);
+				$sth = $db->prepare('UPDATE admin SET password=:password WHERE id=:id');
+				$sth->bindValue(':password', $newHash, PDO::PARAM_STR);
+				$sth->bindValue(':id', $userId, PDO::PARAM_INT);
+				$sth->execute();
 			}
-		} else {
-			if (password_verify($password, $dbPassword)) {
-				$valid = true;
-				if ($userId && password_needs_rehash($dbPassword, PASSWORD_DEFAULT)) {
-					$newHash = $this->createPassword($password);
-					$sth = $db->prepare('UPDATE admin SET password=:password WHERE id=:id');
-					$sth->bindValue(':password', $newHash, PDO::PARAM_STR);
-					$sth->bindValue(':id', $userId, PDO::PARAM_INT);
-					$sth->execute();
-				}
-			}
+			return true;
 		}
-		return $valid;
+		return false;
 	}
 
 	public function createPassword(string $password): string {
