@@ -5,4 +5,8 @@ yarn-error.log
 /__sapper__/
 .env
 /robocze/
-
+build/*
+!build/api
+build/api/upload/*
+!build/api/upload/.htaccess
+build/api/config.php
